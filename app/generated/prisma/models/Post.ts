@@ -29,7 +29,7 @@ export type PostMinAggregateOutputType = {
   title: string | null
   content: string | null
   published: boolean | null
-  authorId: string | null
+  userId: string | null
 }
 
 export type PostMaxAggregateOutputType = {
@@ -37,7 +37,7 @@ export type PostMaxAggregateOutputType = {
   title: string | null
   content: string | null
   published: boolean | null
-  authorId: string | null
+  userId: string | null
 }
 
 export type PostCountAggregateOutputType = {
@@ -45,7 +45,7 @@ export type PostCountAggregateOutputType = {
   title: number
   content: number
   published: number
-  authorId: number
+  userId: number
   _all: number
 }
 
@@ -55,7 +55,7 @@ export type PostMinAggregateInputType = {
   title?: true
   content?: true
   published?: true
-  authorId?: true
+  userId?: true
 }
 
 export type PostMaxAggregateInputType = {
@@ -63,7 +63,7 @@ export type PostMaxAggregateInputType = {
   title?: true
   content?: true
   published?: true
-  authorId?: true
+  userId?: true
 }
 
 export type PostCountAggregateInputType = {
@@ -71,7 +71,7 @@ export type PostCountAggregateInputType = {
   title?: true
   content?: true
   published?: true
-  authorId?: true
+  userId?: true
   _all?: true
 }
 
@@ -152,7 +152,7 @@ export type PostGroupByOutputType = {
   title: string
   content: string | null
   published: boolean
-  authorId: string
+  userId: string
   _count: PostCountAggregateOutputType | null
   _min: PostMinAggregateOutputType | null
   _max: PostMaxAggregateOutputType | null
@@ -181,8 +181,8 @@ export type PostWhereInput = {
   title?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringNullableFilter<"Post"> | string | null
   published?: Prisma.BoolFilter<"Post"> | boolean
-  authorId?: Prisma.StringFilter<"Post"> | string
-  author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userId?: Prisma.StringFilter<"Post"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type PostOrderByWithRelationInput = {
@@ -190,8 +190,8 @@ export type PostOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   published?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
-  author?: Prisma.UserOrderByWithRelationInput
+  userId?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -202,8 +202,8 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringNullableFilter<"Post"> | string | null
   published?: Prisma.BoolFilter<"Post"> | boolean
-  authorId?: Prisma.StringFilter<"Post"> | string
-  author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userId?: Prisma.StringFilter<"Post"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type PostOrderByWithAggregationInput = {
@@ -211,7 +211,7 @@ export type PostOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   published?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.PostCountOrderByAggregateInput
   _max?: Prisma.PostMaxOrderByAggregateInput
   _min?: Prisma.PostMinOrderByAggregateInput
@@ -225,7 +225,7 @@ export type PostScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Post"> | string
   content?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
   published?: Prisma.BoolWithAggregatesFilter<"Post"> | boolean
-  authorId?: Prisma.StringWithAggregatesFilter<"Post"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Post"> | string
 }
 
 export type PostCreateInput = {
@@ -233,7 +233,7 @@ export type PostCreateInput = {
   title: string
   content?: string | null
   published?: boolean
-  author: Prisma.UserCreateNestedOneWithoutPostsInput
+  user: Prisma.UserCreateNestedOneWithoutPostsInput
 }
 
 export type PostUncheckedCreateInput = {
@@ -241,7 +241,7 @@ export type PostUncheckedCreateInput = {
   title: string
   content?: string | null
   published?: boolean
-  authorId: string
+  userId: string
 }
 
 export type PostUpdateInput = {
@@ -249,7 +249,7 @@ export type PostUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
 }
 
 export type PostUncheckedUpdateInput = {
@@ -257,7 +257,7 @@ export type PostUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PostCreateManyInput = {
@@ -265,7 +265,7 @@ export type PostCreateManyInput = {
   title: string
   content?: string | null
   published?: boolean
-  authorId: string
+  userId: string
 }
 
 export type PostUpdateManyMutationInput = {
@@ -280,7 +280,31 @@ export type PostUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type PostCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  published?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+}
+
+export type PostMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  published?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+}
+
+export type PostMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  published?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type PostListRelationFilter = {
@@ -293,114 +317,98 @@ export type PostOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type PostCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  content?: Prisma.SortOrder
-  published?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
+export type StringFieldUpdateOperationsInput = {
+  set?: string
 }
 
-export type PostMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  content?: Prisma.SortOrder
-  published?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
-}
-
-export type PostMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  content?: Prisma.SortOrder
-  published?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
-}
-
-export type PostCreateNestedManyWithoutAuthorInput = {
-  create?: Prisma.XOR<Prisma.PostCreateWithoutAuthorInput, Prisma.PostUncheckedCreateWithoutAuthorInput> | Prisma.PostCreateWithoutAuthorInput[] | Prisma.PostUncheckedCreateWithoutAuthorInput[]
-  connectOrCreate?: Prisma.PostCreateOrConnectWithoutAuthorInput | Prisma.PostCreateOrConnectWithoutAuthorInput[]
-  createMany?: Prisma.PostCreateManyAuthorInputEnvelope
-  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-}
-
-export type PostUncheckedCreateNestedManyWithoutAuthorInput = {
-  create?: Prisma.XOR<Prisma.PostCreateWithoutAuthorInput, Prisma.PostUncheckedCreateWithoutAuthorInput> | Prisma.PostCreateWithoutAuthorInput[] | Prisma.PostUncheckedCreateWithoutAuthorInput[]
-  connectOrCreate?: Prisma.PostCreateOrConnectWithoutAuthorInput | Prisma.PostCreateOrConnectWithoutAuthorInput[]
-  createMany?: Prisma.PostCreateManyAuthorInputEnvelope
-  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-}
-
-export type PostUpdateManyWithoutAuthorNestedInput = {
-  create?: Prisma.XOR<Prisma.PostCreateWithoutAuthorInput, Prisma.PostUncheckedCreateWithoutAuthorInput> | Prisma.PostCreateWithoutAuthorInput[] | Prisma.PostUncheckedCreateWithoutAuthorInput[]
-  connectOrCreate?: Prisma.PostCreateOrConnectWithoutAuthorInput | Prisma.PostCreateOrConnectWithoutAuthorInput[]
-  upsert?: Prisma.PostUpsertWithWhereUniqueWithoutAuthorInput | Prisma.PostUpsertWithWhereUniqueWithoutAuthorInput[]
-  createMany?: Prisma.PostCreateManyAuthorInputEnvelope
-  set?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  disconnect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  delete?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  update?: Prisma.PostUpdateWithWhereUniqueWithoutAuthorInput | Prisma.PostUpdateWithWhereUniqueWithoutAuthorInput[]
-  updateMany?: Prisma.PostUpdateManyWithWhereWithoutAuthorInput | Prisma.PostUpdateManyWithWhereWithoutAuthorInput[]
-  deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
-}
-
-export type PostUncheckedUpdateManyWithoutAuthorNestedInput = {
-  create?: Prisma.XOR<Prisma.PostCreateWithoutAuthorInput, Prisma.PostUncheckedCreateWithoutAuthorInput> | Prisma.PostCreateWithoutAuthorInput[] | Prisma.PostUncheckedCreateWithoutAuthorInput[]
-  connectOrCreate?: Prisma.PostCreateOrConnectWithoutAuthorInput | Prisma.PostCreateOrConnectWithoutAuthorInput[]
-  upsert?: Prisma.PostUpsertWithWhereUniqueWithoutAuthorInput | Prisma.PostUpsertWithWhereUniqueWithoutAuthorInput[]
-  createMany?: Prisma.PostCreateManyAuthorInputEnvelope
-  set?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  disconnect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  delete?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
-  update?: Prisma.PostUpdateWithWhereUniqueWithoutAuthorInput | Prisma.PostUpdateWithWhereUniqueWithoutAuthorInput[]
-  updateMany?: Prisma.PostUpdateManyWithWhereWithoutAuthorInput | Prisma.PostUpdateManyWithWhereWithoutAuthorInput[]
-  deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type PostCreateWithoutAuthorInput = {
+export type PostCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutUserInput, Prisma.PostUncheckedCreateWithoutUserInput> | Prisma.PostCreateWithoutUserInput[] | Prisma.PostUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutUserInput | Prisma.PostCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.PostCreateManyUserInputEnvelope
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+}
+
+export type PostUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutUserInput, Prisma.PostUncheckedCreateWithoutUserInput> | Prisma.PostCreateWithoutUserInput[] | Prisma.PostUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutUserInput | Prisma.PostCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.PostCreateManyUserInputEnvelope
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+}
+
+export type PostUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutUserInput, Prisma.PostUncheckedCreateWithoutUserInput> | Prisma.PostCreateWithoutUserInput[] | Prisma.PostUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutUserInput | Prisma.PostCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.PostUpsertWithWhereUniqueWithoutUserInput | Prisma.PostUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.PostCreateManyUserInputEnvelope
+  set?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  disconnect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  delete?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  update?: Prisma.PostUpdateWithWhereUniqueWithoutUserInput | Prisma.PostUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.PostUpdateManyWithWhereWithoutUserInput | Prisma.PostUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
+}
+
+export type PostUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutUserInput, Prisma.PostUncheckedCreateWithoutUserInput> | Prisma.PostCreateWithoutUserInput[] | Prisma.PostUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutUserInput | Prisma.PostCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.PostUpsertWithWhereUniqueWithoutUserInput | Prisma.PostUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.PostCreateManyUserInputEnvelope
+  set?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  disconnect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  delete?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  update?: Prisma.PostUpdateWithWhereUniqueWithoutUserInput | Prisma.PostUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.PostUpdateManyWithWhereWithoutUserInput | Prisma.PostUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
+}
+
+export type PostCreateWithoutUserInput = {
   id?: string
   title: string
   content?: string | null
   published?: boolean
 }
 
-export type PostUncheckedCreateWithoutAuthorInput = {
+export type PostUncheckedCreateWithoutUserInput = {
   id?: string
   title: string
   content?: string | null
   published?: boolean
 }
 
-export type PostCreateOrConnectWithoutAuthorInput = {
+export type PostCreateOrConnectWithoutUserInput = {
   where: Prisma.PostWhereUniqueInput
-  create: Prisma.XOR<Prisma.PostCreateWithoutAuthorInput, Prisma.PostUncheckedCreateWithoutAuthorInput>
+  create: Prisma.XOR<Prisma.PostCreateWithoutUserInput, Prisma.PostUncheckedCreateWithoutUserInput>
 }
 
-export type PostCreateManyAuthorInputEnvelope = {
-  data: Prisma.PostCreateManyAuthorInput | Prisma.PostCreateManyAuthorInput[]
+export type PostCreateManyUserInputEnvelope = {
+  data: Prisma.PostCreateManyUserInput | Prisma.PostCreateManyUserInput[]
   skipDuplicates?: boolean
 }
 
-export type PostUpsertWithWhereUniqueWithoutAuthorInput = {
+export type PostUpsertWithWhereUniqueWithoutUserInput = {
   where: Prisma.PostWhereUniqueInput
-  update: Prisma.XOR<Prisma.PostUpdateWithoutAuthorInput, Prisma.PostUncheckedUpdateWithoutAuthorInput>
-  create: Prisma.XOR<Prisma.PostCreateWithoutAuthorInput, Prisma.PostUncheckedCreateWithoutAuthorInput>
+  update: Prisma.XOR<Prisma.PostUpdateWithoutUserInput, Prisma.PostUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.PostCreateWithoutUserInput, Prisma.PostUncheckedCreateWithoutUserInput>
 }
 
-export type PostUpdateWithWhereUniqueWithoutAuthorInput = {
+export type PostUpdateWithWhereUniqueWithoutUserInput = {
   where: Prisma.PostWhereUniqueInput
-  data: Prisma.XOR<Prisma.PostUpdateWithoutAuthorInput, Prisma.PostUncheckedUpdateWithoutAuthorInput>
+  data: Prisma.XOR<Prisma.PostUpdateWithoutUserInput, Prisma.PostUncheckedUpdateWithoutUserInput>
 }
 
-export type PostUpdateManyWithWhereWithoutAuthorInput = {
+export type PostUpdateManyWithWhereWithoutUserInput = {
   where: Prisma.PostScalarWhereInput
-  data: Prisma.XOR<Prisma.PostUpdateManyMutationInput, Prisma.PostUncheckedUpdateManyWithoutAuthorInput>
+  data: Prisma.XOR<Prisma.PostUpdateManyMutationInput, Prisma.PostUncheckedUpdateManyWithoutUserInput>
 }
 
 export type PostScalarWhereInput = {
@@ -411,31 +419,31 @@ export type PostScalarWhereInput = {
   title?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringNullableFilter<"Post"> | string | null
   published?: Prisma.BoolFilter<"Post"> | boolean
-  authorId?: Prisma.StringFilter<"Post"> | string
+  userId?: Prisma.StringFilter<"Post"> | string
 }
 
-export type PostCreateManyAuthorInput = {
+export type PostCreateManyUserInput = {
   id?: string
   title: string
   content?: string | null
   published?: boolean
 }
 
-export type PostUpdateWithoutAuthorInput = {
+export type PostUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-export type PostUncheckedUpdateWithoutAuthorInput = {
+export type PostUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-export type PostUncheckedUpdateManyWithoutAuthorInput = {
+export type PostUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -449,8 +457,8 @@ export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   title?: boolean
   content?: boolean
   published?: boolean
-  authorId?: boolean
-  author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
 export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -458,8 +466,8 @@ export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   content?: boolean
   published?: boolean
-  authorId?: boolean
-  author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
 export type PostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -467,8 +475,8 @@ export type PostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   content?: boolean
   published?: boolean
-  authorId?: boolean
-  author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
 export type PostSelectScalar = {
@@ -476,31 +484,31 @@ export type PostSelectScalar = {
   title?: boolean
   content?: boolean
   published?: boolean
-  authorId?: boolean
+  userId?: boolean
 }
 
-export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "content" | "published" | "authorId", ExtArgs["result"]["post"]>
+export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "content" | "published" | "userId", ExtArgs["result"]["post"]>
 export type PostInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PostIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PostIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Post"
   objects: {
-    author: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
     content: string | null
     published: boolean
-    authorId: string
+    userId: string
   }, ExtArgs["result"]["post"]>
   composites: {}
 }
@@ -895,7 +903,7 @@ readonly fields: PostFieldRefs;
  */
 export interface Prisma__PostClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -929,7 +937,7 @@ export interface PostFieldRefs {
   readonly title: Prisma.FieldRef<"Post", 'String'>
   readonly content: Prisma.FieldRef<"Post", 'String'>
   readonly published: Prisma.FieldRef<"Post", 'Boolean'>
-  readonly authorId: Prisma.FieldRef<"Post", 'String'>
+  readonly userId: Prisma.FieldRef<"Post", 'String'>
 }
     
 

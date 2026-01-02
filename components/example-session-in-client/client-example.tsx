@@ -50,12 +50,12 @@ export default function ClientExample() {
 
 
 
-            <div className="flex flex-col gap-4 rounded-md bg-gray-100 p-4">
+            {/* <div className="flex flex-col gap-4 rounded-md bg-gray-100 p-4">
                 <h2 className="text-xl font-bold">Third-party backend integration</h2>
 
                 <div className="flex flex-col">
                     <button
-                        disabled={!session?.accessToken}
+                        disabled={!session?.accessToken}//need to pass accesstoken in session from auth.config.ts
                         onClick={makeRequestWithToken}
                     >
                         Make API Request
@@ -65,7 +65,7 @@ export default function ClientExample() {
                 <p className="italic">
                     Note: This example only works when using the Keycloak provider.
                 </p>
-            </div>
+            </div> */}
 
             {status === "loading" ? (
                 <div>Loading...</div>

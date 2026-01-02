@@ -1,0 +1,147 @@
+Building a production-ready Dockerfile for a Next.js 16 application using pnpm and Prisma requires a multi-stage build. This keeps your final image lean by excluding build-time dependencies and the pnpm cache.
+The Dockerfile
+
+This configuration uses the node:20-alpine base image (standard for Next.js) and includes the necessary steps to generate the Prisma client.
+
+# Stage 1: Dependencies
+FROM node:20-alpine AS deps
+RUN apk add --no-base-check libc6-compat
+WORKDIR /app
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+# Copy prisma schema so the client can be generated
+COPY prisma ./prisma/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Stage 2: Builder
+FROM node:20-alpine AS builder
+WORKDIR /app
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Generate Prisma Client
+RUN pnpx prisma generate
+
+# Disable Next.js telemetry during build
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN pnpm run build
+
+# Stage 3: Runner
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Create a non-root user for security
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy necessary files from builder
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+
+# Automatically leverage output tracing to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["node", "server.js"]
+
+Handling Prisma Migrations
+
+Since this image uses the standalone output, it doesn't include the full Prisma CLI. You have two main options for running migrations:
+
+    Option A (Recommended): Run migrations from your CI/CD pipeline (e.g., GitHub Actions) before deploying the new container.
+
+    Option B: Use a release script. Create a release.sh file that runs npx prisma migrate deploy and then starts the server, then set that as your CMD.
+
+
+To implement Option B, we will create a shell script that acts as an entrypoint. This script will ensure your database schema is up-to-date before the Next.js server starts.
+
+To implement Option B, we will create a shell script that acts as an entrypoint. This script will ensure your database schema is up-to-date before the Next.js server starts.
+1. Create the entrypoint.sh Script
+
+Create a file named entrypoint.sh in your project root:
+Bash
+
+#!/bin/sh
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+echo "Running database migrations..."
+# Using pnpx to run prisma migrate without needing the full dev dependencies
+pnpx prisma migrate deploy
+
+echo "Starting Next.js server..."
+node server.js
+
+2. Updated Dockerfile
+
+We need to modify the Runner stage of the Dockerfile to include the Prisma schema (required for migrations) and the entrypoint script.
+Dockerfile
+
+# ... (Stages 1 and 2 remain the same as the previous response) ...
+
+# Stage 3: Runner
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy standalone build and static files
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# IMPORTANT: Copy Prisma schema and entrypoint script for Option B
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
+
+# Give execution permission to the script
+RUN chmod +x ./entrypoint.sh
+
+USER nextjs
+
+EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+# Change the CMD to run our entrypoint script
+CMD ["./entrypoint.sh"]
+
+How this works
+
+    Safety: The set -e in the script ensures that if the migration fails (e.g., database is down or there's a schema conflict), the container will crash and restart rather than running the app with a broken database connection.
+
+    Prisma Migrate Deploy: Unlike migrate dev, migrate deploy is designed for production. It only applies existing migrations and does not look for changes in the schema file or attempt to reset the database.
+
+    Permissions: We use chmod +x to ensure the container has the right to execute the shell script.
+
+    Important Note on Database URL
+
+When running this container, ensure your DATABASE_URL environment variable is passed to the Docker container at runtime. Prisma needs this during the migrate deploy step inside the container.
+Bash
+
+docker run -e DATABASE_URL="postgresql://user:password@host:5432/db" my-nextjs-app
